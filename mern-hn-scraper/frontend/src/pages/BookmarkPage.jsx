@@ -12,7 +12,7 @@ import API from "../api/axios";
 
 import {
   AuthContext,
-} from "../context/AuthContext";
+} from "../context/AuthContextValue";
 
 function BookmarksPage() {
 
@@ -27,7 +27,7 @@ function BookmarksPage() {
       try {
 
         const res = await API.get(
-          "/stories/bookmarks",
+          "/stories/bookmarks/all",
           {
             headers: {
               Authorization: `Bearer ${user.token}`,

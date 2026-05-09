@@ -1,49 +1,41 @@
-import { createContext, useEffect, useState } from "react";
+import { useState } from "react";
 
-export const AuthContext = createContext();
+import { AuthContext } from "./AuthContextValue";
 
-const AuthProvider = ({ children }) => {
+const getStoredUser = () => {
+  const storedUser = localStorage.getItem("user");
 
-  const [user, setUser] = useState(null);
+  if (!storedUser) {
+    return null;
+  }
 
-  useEffect(() => {
+  try {
+    return JSON.parse(storedUser);
+  } catch (error) {
+    console.warn("Removing invalid stored user data", error);
+    localStorage.removeItem("user");
+    return null;
+  }
+};
 
-    const storedUser = localStorage.getItem("user");
-
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-
-  }, []);
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(getStoredUser);
 
   const login = (userData) => {
-
-    localStorage.setItem(
-      "user",
-      JSON.stringify(userData)
-    );
-
+    localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
   };
 
   const logout = () => {
-
     localStorage.removeItem("user");
-
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
 export default AuthProvider;

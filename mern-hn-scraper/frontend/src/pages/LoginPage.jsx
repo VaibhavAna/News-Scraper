@@ -12,7 +12,7 @@ import API from "../api/axios";
 
 import {
   AuthContext,
-} from "../context/AuthContext";
+} from "../context/AuthContextValue";
 
 function LoginPage() {
 

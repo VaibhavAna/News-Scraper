@@ -3,11 +3,13 @@ const cheerio = require("cheerio");
 
 const Story = require("../models/Story");
 
+const HN_BASE_URL = "https://news.ycombinator.com/";
+
 const scrapeStories = async () => {
   try {
     console.log("Starting scraper...");
 
-    const { data } = await axios.get("https://news.ycombinator.com");
+    const { data } = await axios.get(HN_BASE_URL);
 
     const $ = cheerio.load(data);
 
@@ -21,9 +23,15 @@ const scrapeStories = async () => {
         .text()
         .trim();
 
-      const url = $(element)
+      const href = $(element)
         .find(".titleline a")
         .attr("href");
+
+      if (!title || !href) {
+        return;
+      }
+
+      const url = new URL(href, HN_BASE_URL).href;
 
       const subtext = $(element).next();
 
@@ -73,6 +81,7 @@ const scrapeStories = async () => {
     return stories;
   } catch (error) {
     console.error("Scraper Error:", error.message);
+    throw error;
   }
 };
 

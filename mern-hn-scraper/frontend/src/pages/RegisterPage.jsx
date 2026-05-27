@@ -15,6 +15,8 @@ import {
   AuthContext,
 } from "../context/AuthContextValue";
 
+import "../styles/auth.css";
+
 function RegisterPage() {
 
   const navigate = useNavigate();
@@ -58,7 +60,7 @@ function RegisterPage() {
 
       console.log(error);
 
-      alert("Registration failed");
+      alert(error?.response?.data?.message || "Registration failed");
 
     } finally {
 
@@ -68,75 +70,41 @@ function RegisterPage() {
 
   return (
 
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background:
-          "linear-gradient(135deg, #0f172a, #1e3a8a)",
-        fontFamily: "Arial",
-      }}
-    >
+    <div className="auth-shell">
+      <section className="auth-panel">
+        <div className="auth-brand">JWT Auth System</div>
+        <h1>Create a protected account in seconds.</h1>
+        <p>
+          Register once, receive a signed token, and start saving your Hacker
+          News stories behind secure API routes.
+        </p>
 
-      {/* 3D BLUE REGISTER CARD */}
-      <div
-        style={{
-          width: "300px",
-          background: "linear-gradient(145deg, #ffffff, #f1f5f9)",
-          padding: "28px",
-          borderRadius: "18px",
-          boxShadow:
-            "10px 10px 20px rgba(0,0,0,0.25), -6px -6px 15px rgba(255,255,255,0.1)",
-          transform: "perspective(800px) rotateX(2deg)",
-        }}
-      >
-
-        <div
-          style={{
-            textAlign: "center",
-            marginBottom: "22px",
-          }}
-        >
-
-          <h1
-            style={{
-              margin: "0",
-              color: "#1e3a8a",
-              fontSize: "22px",
-            }}
-          >
-            Create Account
-          </h1>
-
-          <p
-            style={{
-              color: "#64748b",
-              fontSize: "13px",
-              marginTop: "6px",
-            }}
-          >
-            Register to get started
-          </p>
-
+        <div className="auth-highlights">
+          <div className="auth-highlight">
+            <strong>Hashing</strong>
+            <span>Passwords stored safely</span>
+          </div>
+          <div className="auth-highlight">
+            <strong>Tokens</strong>
+            <span>Bearer auth for requests</span>
+          </div>
+          <div className="auth-highlight">
+            <strong>Routes</strong>
+            <span>Private bookmark access</span>
+          </div>
         </div>
+      </section>
+
+      <main className="auth-card-wrap">
+        <div className="auth-card">
+          <h2>Create account</h2>
+          <p>Use a valid email and a password with at least 6 characters.</p>
 
         <form onSubmit={handleSubmit}>
 
-          <div style={{ marginBottom: "15px" }}>
+          <div className="auth-field">
 
-            <label
-              style={{
-                display: "block",
-                marginBottom: "6px",
-                fontWeight: "600",
-                fontSize: "13px",
-                color: "#334155",
-              }}
-            >
-              Name
-            </label>
+            <label>Name</label>
 
             <input
               type="text"
@@ -145,32 +113,13 @@ function RegisterPage() {
               value={formData.name}
               onChange={handleChange}
               required
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "10px",
-                border: "1px solid #cbd5e1",
-                fontSize: "13px",
-                outline: "none",
-                background: "#f8fafc",
-              }}
             />
 
           </div>
 
-          <div style={{ marginBottom: "15px" }}>
+          <div className="auth-field">
 
-            <label
-              style={{
-                display: "block",
-                marginBottom: "6px",
-                fontWeight: "600",
-                fontSize: "13px",
-                color: "#334155",
-              }}
-            >
-              Email
-            </label>
+            <label>Email</label>
 
             <input
               type="email"
@@ -179,32 +128,13 @@ function RegisterPage() {
               value={formData.email}
               onChange={handleChange}
               required
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "10px",
-                border: "1px solid #cbd5e1",
-                fontSize: "13px",
-                outline: "none",
-                background: "#f8fafc",
-              }}
             />
 
           </div>
 
-          <div style={{ marginBottom: "20px" }}>
+          <div className="auth-field">
 
-            <label
-              style={{
-                display: "block",
-                marginBottom: "6px",
-                fontWeight: "600",
-                fontSize: "13px",
-                color: "#334155",
-              }}
-            >
-              Password
-            </label>
+            <label>Password</label>
 
             <input
               type="password"
@@ -212,16 +142,8 @@ function RegisterPage() {
               placeholder="Enter password"
               value={formData.password}
               onChange={handleChange}
+              minLength="6"
               required
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "10px",
-                border: "1px solid #cbd5e1",
-                fontSize: "13px",
-                outline: "none",
-                background: "#f8fafc",
-              }}
             />
 
           </div>
@@ -229,20 +151,7 @@ function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            style={{
-              width: "100%",
-              padding: "10px",
-              border: "none",
-              borderRadius: "10px",
-              background:
-                "linear-gradient(135deg, #1e3a8a, #2563eb)",
-              color: "#fff",
-              fontSize: "14px",
-              fontWeight: "bold",
-              cursor: "pointer",
-              boxShadow:
-                "0 6px 14px rgba(37,99,235,0.3)",
-            }}
+            className="auth-submit"
           >
 
             {loading
@@ -253,28 +162,13 @@ function RegisterPage() {
 
         </form>
 
-        <div
-          style={{
-            marginTop: "15px",
-            textAlign: "center",
-          }}
-        >
+        <div className="auth-switch">
 
-          <p
-            style={{
-              color: "#64748b",
-              fontSize: "12px",
-            }}
-          >
+          <p>
             Already have an account?{" "}
 
             <Link
               to="/login"
-              style={{
-                color: "#2563eb",
-                fontWeight: "bold",
-                textDecoration: "none",
-              }}
             >
               Login
             </Link>
@@ -283,7 +177,8 @@ function RegisterPage() {
 
         </div>
 
-      </div>
+        </div>
+      </main>
 
     </div>
   );

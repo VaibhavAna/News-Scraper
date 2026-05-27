@@ -15,15 +15,19 @@ const startServer = async () => {
 
     await connectDB();
 
-    await scrapeStories();
-
-    const count = await Story.countDocuments();
-
-    console.log(`Stories in DB: ${count}`);
-
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
+
+    scrapeStories()
+      .then(async () => {
+        const count = await Story.countDocuments();
+
+        console.log(`Stories in DB: ${count}`);
+      })
+      .catch((error) => {
+        console.error("Initial scrape failed:", error.message);
+      });
 
   } catch (error) {
     console.error(error);

@@ -14,6 +14,8 @@ import {
   AuthContext,
 } from "../context/AuthContextValue";
 
+import "../styles/auth.css";
+
 function LoginPage() {
 
   const navigate = useNavigate();
@@ -56,7 +58,7 @@ function LoginPage() {
 
       console.log(error);
 
-      alert("Invalid credentials");
+      alert(error?.response?.data?.message || "Invalid credentials");
 
     } finally {
 
@@ -66,79 +68,40 @@ function LoginPage() {
 
   return (
 
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background:
-          "linear-gradient(135deg, #0f172a, #1e3a8a)",
-        fontFamily: "Arial",
-      }}
-    >
+    <div className="auth-shell">
+      <section className="auth-panel">
+        <div className="auth-brand">JWT Auth System</div>
+        <h1>Secure access for your Hacker News workspace.</h1>
+        <p>
+          Sign in to manage saved stories with token-based authentication,
+          protected routes, and persistent sessions.
+        </p>
 
-      {/* 3D BLUE CARD */}
-      <div
-        style={{
-          width: "300px",
-          background: "linear-gradient(145deg, #ffffff, #f1f5f9)",
-          padding: "28px",
-          borderRadius: "18px",
-          boxShadow:
-            "10px 10px 20px rgba(0,0,0,0.25), -6px -6px 15px rgba(255,255,255,0.1)",
-          transform: "perspective(800px) rotateX(2deg)",
-        }}
-      >
-
-        <div
-          style={{
-            textAlign: "center",
-            marginBottom: "22px",
-          }}
-        >
-
-          <h1
-            style={{
-              margin: "0",
-              color: "#1e3a8a",
-              fontSize: "22px",
-            }}
-          >
-            Welcome Back
-          </h1>
-
-          <p
-            style={{
-              color: "#64748b",
-              fontSize: "13px",
-              marginTop: "6px",
-            }}
-          >
-            Login to continue
-          </p>
-
+        <div className="auth-highlights">
+          <div className="auth-highlight">
+            <strong>JWT</strong>
+            <span>Signed 7-day sessions</span>
+          </div>
+          <div className="auth-highlight">
+            <strong>MongoDB</strong>
+            <span>Saved user bookmarks</span>
+          </div>
+          <div className="auth-highlight">
+            <strong>API</strong>
+            <span>Protected Express routes</span>
+          </div>
         </div>
+      </section>
 
+      <main className="auth-card-wrap">
+        <div className="auth-card">
+          <h2>Welcome back</h2>
+          <p>Enter your credentials to continue.</p>
         <form onSubmit={handleSubmit}>
 
-          <div
-            style={{
-              marginBottom: "15px",
-            }}
-          >
+          <div className="auth-field">
 
-            <label
-              style={{
-                display: "block",
-                marginBottom: "6px",
-                fontWeight: "600",
-                fontSize: "13px",
-                color: "#334155",
-              }}
-            >
-              Email
-            </label>
+            <label>Email</label>
 
             <input
               type="email"
@@ -147,36 +110,13 @@ function LoginPage() {
               value={formData.email}
               onChange={handleChange}
               required
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "10px",
-                border: "1px solid #cbd5e1",
-                fontSize: "13px",
-                outline: "none",
-                background: "#f8fafc",
-              }}
             />
 
           </div>
 
-          <div
-            style={{
-              marginBottom: "20px",
-            }}
-          >
+          <div className="auth-field">
 
-            <label
-              style={{
-                display: "block",
-                marginBottom: "6px",
-                fontWeight: "600",
-                fontSize: "13px",
-                color: "#334155",
-              }}
-            >
-              Password
-            </label>
+            <label>Password</label>
 
             <input
               type="password"
@@ -185,15 +125,6 @@ function LoginPage() {
               value={formData.password}
               onChange={handleChange}
               required
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "10px",
-                border: "1px solid #cbd5e1",
-                fontSize: "13px",
-                outline: "none",
-                background: "#f8fafc",
-              }}
             />
 
           </div>
@@ -201,52 +132,24 @@ function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            style={{
-              width: "100%",
-              padding: "10px",
-              border: "none",
-              borderRadius: "10px",
-              background:
-                "linear-gradient(135deg, #1e3a8a, #2563eb)",
-              color: "#fff",
-              fontSize: "14px",
-              fontWeight: "bold",
-              cursor: "pointer",
-              boxShadow:
-                "0 6px 14px rgba(37,99,235,0.3)",
-            }}
+            className="auth-submit"
           >
 
             {loading
-              ? "Logging..."
+              ? "Signing in..."
               : "Login"}
 
           </button>
 
         </form>
 
-        <div
-          style={{
-            marginTop: "15px",
-            textAlign: "center",
-          }}
-        >
+        <div className="auth-switch">
 
-          <p
-            style={{
-              color: "#64748b",
-              fontSize: "12px",
-            }}
-          >
+          <p>
             Don't have an account?{" "}
 
             <Link
               to="/register"
-              style={{
-                color: "#2563eb",
-                fontWeight: "bold",
-                textDecoration: "none",
-              }}
             >
               Register
             </Link>
@@ -255,7 +158,8 @@ function LoginPage() {
 
         </div>
 
-      </div>
+        </div>
+      </main>
 
     </div>
   );

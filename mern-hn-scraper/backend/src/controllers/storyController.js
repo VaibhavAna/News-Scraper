@@ -1,6 +1,9 @@
 const Story = require("../models/Story");
 
 const User = require("../models/User");
+const mongoose = require("mongoose");
+
+const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 
 // GET ALL STORIES
@@ -24,6 +27,11 @@ const getStories = async (req, res) => {
 // GET SINGLE STORY
 const getSingleStory = async (req, res) => {
   try {
+    if (!isValidId(req.params.id)) {
+      return res.status(400).json({
+        message: "Invalid story id",
+      });
+    }
 
     const story = await Story.findById(
       req.params.id
@@ -53,12 +61,32 @@ const toggleBookmark = async (req, res) => {
 
     const storyId = req.params.id;
 
+    if (!isValidId(storyId)) {
+      return res.status(400).json({
+        message: "Invalid story id",
+      });
+    }
+
+    const story = await Story.findById(storyId);
+
+    if (!story) {
+      return res.status(404).json({
+        message: "Story not found",
+      });
+    }
+
     const user = await User.findById(
       req.user._id
     );
 
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
     const alreadyBookmarked =
-      user.bookmarks.includes(storyId);
+      user.bookmarks.some((id) => id.toString() === storyId);
 
     if (alreadyBookmarked) {
 
@@ -96,6 +124,12 @@ const getBookmarks = async (req, res) => {
     const user = await User.findById(
       req.user._id
     ).populate("bookmarks");
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
 
     res.status(200).json(
       user.bookmarks

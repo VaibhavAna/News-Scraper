@@ -1,5 +1,4 @@
 const Story = require("../models/Story");
-
 const User = require("../models/User");
 const mongoose = require("mongoose");
 
